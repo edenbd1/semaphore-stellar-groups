@@ -35,6 +35,13 @@ Built against **soroban-sdk 28** because the Poseidon host primitive is currentl
 through `soroban-poseidon` (sdk-28). The sdk-29 contracts in the other repos consume the root it
 produces unchanged. Once the SDK exposes a public Poseidon (≥29), this can move to sdk 29.
 
+
+## Status & safety
+
+> ⚠️ **Prototype — unaudited, testnet only.** This code has **not** been audited and runs only
+> on Stellar **testnet** with small fixtures. Do not use it with real value or on mainnet.
+> Proofs reuse Ethereum's Semaphore trusted-setup ceremony (no new ceremony is performed).
+
 ## License
 
 MIT — see [LICENSE](./LICENSE).
