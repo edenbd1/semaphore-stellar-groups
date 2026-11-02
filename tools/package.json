@@ -1,0 +1,10 @@
+{
+  "name": "semaphore-groups-tools",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@zk-kit/lean-imt": "^2.2.0",
+    "poseidon-lite": "^0.3.0"
+  }
+}

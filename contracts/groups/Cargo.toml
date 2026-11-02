@@ -1,0 +1,16 @@
+[package]
+name = "semaphore-groups"
+version = "0.0.1"
+edition.workspace = true
+license.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+soroban-sdk = "28"
+soroban-poseidon = "28"
+
+[dev-dependencies]
+soroban-sdk = { version = "28", features = ["testutils"] }
