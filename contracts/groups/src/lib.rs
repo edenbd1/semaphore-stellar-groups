@@ -13,10 +13,24 @@
 
 use soroban_poseidon::poseidon_hash;
 use soroban_sdk::{
-    contract, contracterror, contractimpl, contracttype, symbol_short, Address, Env, Vec, U256,
+    contract, contracterror, contractevent, contractimpl, contracttype, Address, Env, Vec, U256,
 };
 
+#[contractevent]
+pub struct GroupCreated {
+    pub group_id: u32,
+    pub admin: Address,
+}
+
+#[contractevent]
+pub struct MemberAdded {
+    pub group_id: u32,
+    pub size: u32,
+    pub root: U256,
+}
+
 #[cfg(test)]
+#[allow(dead_code)]
 mod params;
 #[cfg(test)]
 mod leanimt_fixture;
@@ -76,7 +90,7 @@ impl SemaphoreGroups {
         env.storage().persistent().set(&DataKey::Admin(id), &admin);
         env.storage().persistent().set(&DataKey::Leaves(id), &Vec::<U256>::new(&env));
         env.storage().instance().set(&DataKey::GroupCount, &(id + 1));
-        env.events().publish((symbol_short!("grp_new"), id), admin);
+        GroupCreated { group_id: id, admin }.publish(&env);
         id
     }
 
@@ -91,7 +105,7 @@ impl SemaphoreGroups {
         leaves.push_back(commitment);
         env.storage().persistent().set(&DataKey::Leaves(group_id), &leaves);
         let root = leanimt_root(&env, &leaves);
-        env.events().publish((symbol_short!("member"), group_id), (leaves.len(), root));
+        MemberAdded { group_id, size: leaves.len(), root }.publish(&env);
         Ok(leaves.len())
     }
 
@@ -99,7 +113,7 @@ impl SemaphoreGroups {
     pub fn root(env: Env, group_id: u32) -> Result<U256, Error> {
         let leaves: Vec<U256> =
             env.storage().persistent().get(&DataKey::Leaves(group_id)).ok_or(Error::GroupNotFound)?;
-        if leaves.len() == 0 {
+        if leaves.is_empty() {
             return Err(Error::EmptyGroup);
         }
         Ok(leanimt_root(&env, &leaves))
