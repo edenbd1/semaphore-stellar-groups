@@ -5,7 +5,7 @@ import { poseidon2 } from "poseidon-lite"
 import { writeFileSync } from "fs"
 const be32 = (d) => BigInt(d).toString(16).padStart(64, "0")
 const arr = (hex) => "[" + hex.match(/../g).map((x) => "0x" + x).join(", ") + "]"
-const leaves = [1n, 2n, 3n, 4n, 5n]
+const leaves = [1n, 2n, 3n, 4n, 5n, 6n, 7n, 8n]
 const t = new LeanIMT((a, b) => poseidon2([a, b]))
 const roots = []
 for (const l of leaves) { t.insert(l); roots.push(t.root.toString()) }
