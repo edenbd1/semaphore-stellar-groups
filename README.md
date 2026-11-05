@@ -40,6 +40,12 @@ produces unchanged. Once the SDK exposes a public Poseidon (≥29), this can mov
 
 > ⚠️ **Prototype — unaudited, testnet only.** This code has **not** been audited and runs only
 > on Stellar **testnet** with small fixtures. Do not use it with real value or on mainnet.
+
+### Known limitations
+
+- `add_member` recomputes the whole LeanIMT root on-chain (O(n) hashes per add, O(n²) over a group's life) — large groups can hit Soroban resource limits. An incremental-root optimization is planned.
+- No dedup of commitments and no max-depth cap; the Semaphore circuit assumes a fixed maximum depth, which the caller must respect.
+- No storage-TTL management yet (instance archival can brick the contract until restored).
 > Proofs reuse Ethereum's Semaphore trusted-setup ceremony (no new ceremony is performed).
 
 ## License
